@@ -1,19 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{%block title%}Meu titulo{%endblock%}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>{% block title %}Meu Aplicativo{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="sobre">Sobre</a></li>
-            <li><a href="login">Login</a></li>
-        </ul>
-    </nav>
-    {% block content %}
-    {% endblock %}
+    <button class="menu-toggle" id="menuToggle">☰ Menu</button>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="app-container">
+        <!-- Menu Lateral -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Meu App</h2>
+                <p>Sistema de Gestão</p>
+            </div>
+            <div class="sidebar-nav">
+                <ul>
+                    <li><a href="{{ url_for('home') }}" data-page="home">🏠 Dashboard</a></li>
+                    <li><a href="{{ url_for('sobre') }}" data-page="sobre">ℹ️ Sobre</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <div class="top-bar">
+                <h1 class="page-title">{% block page_title %}Bem-vindo{% endblock %}</h1>
+                <div class="user-info">
+                    {% if session.usuario %}
+                    Olá, {{ session.usuario }} | <a href="{{ url_for('logout') }}" style="color: #667eea;">Sair</a>
+                    {% else %}
+                    Visitante
+                    {% endif %}
+                </div>
+            </div>
+            <div class="content-area">
+                {% block content %}
+                <!-- CONTEÚDO SERÁ INSERIDO AQUI -->
+                <div class="card">
+                    <h2>Conteúdo padrão</h2>
+                    <p>Se você está vendo esta mensagem, o template está funcionando!</p>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+
 </html>
